@@ -1,24 +1,30 @@
-import logo from './logo.svg';
+
+import BaseLayout from './Layout/baselayout';
+import React , {Suspense} from 'react'
 import './App.css';
+import StudentCreate from './Views/Student/StudentCreate';
+import { BrowserRouter as Router,Routes, Route } from 'react-router-dom'
+import StudentList from './Views/Student/StudentList';
+
+
+
+// Auth
+ const Login = React.lazy(() => import('../src/Auth/Login'));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <React.Fragment>
+     <Router>
+       <Suspense fallback = {<div>Loading....</div>} >
+        <Routes >
+          <Route path="/login" name="Login Page" Component={props => <Login {...props}/>} />
+            <Route path="/" name="Home" Component={props => <BaseLayout {...props}/>} />
+            <Route path="/students/create" name="Create" Component={StudentCreate} />
+            <Route path="/students/list" name="List" Component={StudentList} />
+        </Routes>
+        </Suspense>
+     </Router>
+   </React.Fragment>
   );
 }
 
